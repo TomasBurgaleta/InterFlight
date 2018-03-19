@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface RoutesService {
 
-    List<Route> gelAllRoutes();
+    List<Route> getAllRoutes();
 }

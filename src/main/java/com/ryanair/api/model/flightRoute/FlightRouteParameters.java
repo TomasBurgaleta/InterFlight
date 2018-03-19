@@ -6,6 +6,7 @@ import com.ryanair.api.model.Section;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class FlightRouteParameters {
 
@@ -53,5 +54,22 @@ public class FlightRouteParameters {
 
     public void setArrivalDateTime(LocalDateTime arrivalDateTime) {
         this.arrivalDateTime = arrivalDateTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FlightRouteParameters that = (FlightRouteParameters) o;
+        return Objects.equals(sections, that.sections) &&
+                Objects.equals(departureDateTime, that.departureDateTime) &&
+                Objects.equals(arrivalDateTime, that.arrivalDateTime) &&
+                Objects.equals(typeRoute, that.typeRoute);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(sections, departureDateTime, arrivalDateTime, typeRoute);
     }
 }

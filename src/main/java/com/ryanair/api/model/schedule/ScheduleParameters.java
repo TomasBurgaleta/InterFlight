@@ -1,6 +1,7 @@
 package com.ryanair.api.model.schedule;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class ScheduleParameters implements Serializable {
 
@@ -46,5 +47,22 @@ public class ScheduleParameters implements Serializable {
 
     public void setMonth(int month) {
         this.month = month;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ScheduleParameters that = (ScheduleParameters) o;
+        return year == that.year &&
+                month == that.month &&
+                Objects.equals(departure, that.departure) &&
+                Objects.equals(arrival, that.arrival);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(departure, arrival, year, month);
     }
 }

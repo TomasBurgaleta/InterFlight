@@ -58,13 +58,13 @@ public class RoutesBizImpl implements RoutesBiz {
     }
 
     private synchronized List<Route> getRoutesFromRoutesService() {
-        return routesService.gelAllRoutes();
+        return routesService.getAllRoutes();
     }
 
     @Override
     public Set<String> getIntermediateAirportsByRoute(Interconnections interconnections) {
         LOG.info("loking for interconnected flights for route " + getRouteKey(interconnections.getArrival(),interconnections.getDeparture()));
-        List<Route> routeList = routesService.gelAllRoutes();
+        List<Route> routeList = routesService.getAllRoutes();
         Map<String, Set<String>>  mapDepartures = getAllDepartures(routeList);
         Map<String, Set<String>>  mapArrivals = getAllArrival(routeList);
         Set<String> departureSet = mapDepartures.get(interconnections.getDeparture());

@@ -1,5 +1,7 @@
 package com.ryanair.api.model;
 
+import java.util.Objects;
+
 public class Section {
 
     private String departure;
@@ -31,5 +33,20 @@ public class Section {
 
     public void setArrival(String arrival) {
         this.arrival = arrival;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Section section = (Section) o;
+        return Objects.equals(departure, section.departure) &&
+                Objects.equals(arrival, section.arrival);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(departure, arrival);
     }
 }

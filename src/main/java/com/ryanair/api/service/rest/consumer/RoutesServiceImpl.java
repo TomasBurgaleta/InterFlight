@@ -23,7 +23,7 @@ public class RoutesServiceImpl implements RoutesService {
     private RoutesStore routesStore;
 
     @Override
-    public List<Route> gelAllRoutes()
+    public List<Route> getAllRoutes()
     {
         List<Route> routeList = Collections.emptyList();
         ResultRestStore<List<Route>> routeResultRestStore = routesStore.gelAllRoutes();

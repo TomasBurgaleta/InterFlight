@@ -49,7 +49,9 @@ public class SchedulesServiceImpl implements SchedulesService {
         List<Day> dayList = schedule.getDays();
         int scheduleMonth = scheduleResponse.getScheduleParameters().getMonth();
         int scheduleYear = scheduleResponse.getScheduleParameters().getYear();
-        if (departureDate.getYear() == scheduleYear && departureDate.getMonthValue() == scheduleMonth) {
+        if (departureDate.getYear() == arrivalDate.getYear() && departureDate.getMonthValue() == arrivalDate.getMonthValue()) {
+            return dayList.stream().filter(u -> u.getDay() >= departureDate.getDayOfMonth()).filter(u -> u.getDay() <= arrivalDate.getDayOfMonth()).collect(Collectors.toList());
+        } else if (departureDate.getYear() == scheduleYear && departureDate.getMonthValue() == scheduleMonth) {
             return dayList.stream().filter(u -> u.getDay() >= departureDate.getDayOfMonth()).collect(Collectors.toList());
         } else if (arrivalDate.getYear() == scheduleYear && arrivalDate.getMonthValue() == scheduleMonth) {
             return dayList.stream().filter(u -> u.getDay() <= arrivalDate.getDayOfMonth()).collect(Collectors.toList());

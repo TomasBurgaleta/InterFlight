@@ -1,7 +1,9 @@
 package com.ryanair.api.service.rest.consumer;
 
+import com.ryanair.api.model.flightRoute.FlightRoute;
+import com.ryanair.api.model.flightRoute.FlightRouteParameters;
 import com.ryanair.api.model.ResultRestStore;
-import com.ryanair.api.model.Schedule.*;
+import com.ryanair.api.model.schedule.*;
 import com.ryanair.api.model.Section;
 import com.ryanair.api.store.rest.consumer.SchedulesStore;
 import org.slf4j.Logger;
@@ -27,16 +29,16 @@ public class SchedulesServiceImpl implements SchedulesService {
 
     @Override
     @Async
-    public CompletableFuture<List<FlightResult>> getFlightsBySection(Section section, FlightRoute flightRoute) throws InterruptedException {
-        LOG.info("FlightResult to " + section.getRoute());
-        List<FlightResult> validFlights = new ArrayList<FlightResult>();
-        List<ScheduleParameters> scheduleParametersList = ScheduleFactory.createScheduleParameters(section, flightRoute);
+    public CompletableFuture<List<FlightRoute>> getFlightRouteListBySection(Section section, FlightRouteParameters flightRouteParameters) throws InterruptedException {
+        LOG.info("flightRoute to " + section.getRoute());
+        List<FlightRoute> validFlights = new ArrayList<FlightRoute>();
+        List<ScheduleParameters> scheduleParametersList = ScheduleFactory.createScheduleParameters(section, flightRouteParameters);
         List<ScheduleResponse> scheduleResponseList = getSchedules(scheduleParametersList);
         for (ScheduleResponse scheduleResponse : scheduleResponseList) {
-            List<Day> dayList = getFilterDaysFromSchedule(scheduleResponse, flightRoute.getDepartureDateTime().toLocalDate(), flightRoute.getArrivalDateTime().toLocalDate());
-            List<FlightResult> flightResultList = createFlightResultList(dayList, scheduleResponse);
-            if(flightResultList != null && !flightResultList.isEmpty()) {
-                validFlights.addAll(flightResultList);
+            List<Day> dayList = getFilterDaysFromSchedule(scheduleResponse, flightRouteParameters.getDepartureDateTime().toLocalDate(), flightRouteParameters.getArrivalDateTime().toLocalDate());
+            List<FlightRoute> flightRouteList = getFlightRouteResultList(dayList, scheduleResponse);
+            if(flightRouteList != null && !flightRouteList.isEmpty()) {
+                validFlights.addAll(flightRouteList);
             }
         }
         return CompletableFuture.completedFuture(validFlights);
@@ -56,22 +58,22 @@ public class SchedulesServiceImpl implements SchedulesService {
     }
 
 
-    private List<FlightResult> createFlightResultList(List<Day> dayList, ScheduleResponse scheduleResponse) {
+    private List<FlightRoute> getFlightRouteResultList(List<Day> dayList, ScheduleResponse scheduleResponse) {
         int year =  scheduleResponse.getScheduleParameters().getYear();
         int month = scheduleResponse.getScheduleParameters().getMonth();
         String departure = scheduleResponse.getScheduleParameters().getDeparture();
         String arrival = scheduleResponse.getScheduleParameters().getArrival();
-        List<FlightResult> allFlightResultList = new ArrayList<FlightResult>();
+        List<FlightRoute> allFlightRouteList = new ArrayList<FlightRoute>();
         for (Day day : dayList) {
             List<Flight> flightList = day.getFlights();
             int dayMoth = day.getDay();
             LocalDate localDate = LocalDate.of(year,month,dayMoth);
-            List<FlightResult> flightResultList = flightList.stream()
-                    .map(obj -> new FlightResult(obj, localDate, departure, arrival)).collect(Collectors.toList());
+            List<FlightRoute> flightRouteList = flightList.stream()
+                    .map(obj -> new FlightRoute(obj, localDate, departure, arrival)).collect(Collectors.toList());
 
-            allFlightResultList.addAll(flightResultList);
+            allFlightRouteList.addAll(flightRouteList);
         }
-        return allFlightResultList;
+        return allFlightRouteList;
     }
 
     private List<ScheduleResponse> getSchedules(List<ScheduleParameters> scheduleParametersList) {
@@ -87,10 +89,6 @@ public class SchedulesServiceImpl implements SchedulesService {
         return scheduleResponseList;
 
     }
-
-
-
-
 
     public void setSchedulesStore(SchedulesStore schedulesStore) {
         this.schedulesStore = schedulesStore;

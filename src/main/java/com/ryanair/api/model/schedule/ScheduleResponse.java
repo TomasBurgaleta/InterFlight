@@ -1,4 +1,4 @@
-package com.ryanair.api.model.Schedule;
+package com.ryanair.api.model.schedule;
 
 public class ScheduleResponse {
 

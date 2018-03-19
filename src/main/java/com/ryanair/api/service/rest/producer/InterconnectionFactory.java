@@ -1,7 +1,8 @@
 package com.ryanair.api.service.rest.producer;
 
-import com.ryanair.api.model.Interconnections.Interconnections;
-import com.ryanair.api.model.Interconnections.InterconnectionsRequest;
+import com.ryanair.api.biz.InterconnectionException;
+import com.ryanair.api.model.interconnections.Interconnections;
+import com.ryanair.api.model.interconnections.InterconnectionsRequest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,7 +21,7 @@ public class InterconnectionFactory {
         return interconnectionsRequest;
     }
 
-    protected static Interconnections createInterconnections(InterconnectionsRequest interconnectionsRequest) {
+    protected static Interconnections createInterconnections(InterconnectionsRequest interconnectionsRequest) throws InterconnectionException {
         Interconnections interconnections = new Interconnections();
         try {
             interconnections.setArrival(interconnectionsRequest.getArrival());
@@ -29,8 +30,7 @@ public class InterconnectionFactory {
             interconnections.setDepartureDateTime(LocalDateTime.parse(interconnectionsRequest.getDepartureDateTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         }
         catch (DateTimeParseException e) {
-            // Throw invalid date message
-            System.out.println("Exception was thrown");
+            throw new InterconnectionException("Invalid DateTime");
         }
 
         return interconnections;

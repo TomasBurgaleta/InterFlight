@@ -1,7 +1,7 @@
 package com.ryanair.api.service.rest.consumer;
 
-import com.ryanair.api.model.Schedule.FlightRoute;
-import com.ryanair.api.model.Schedule.ScheduleParameters;
+import com.ryanair.api.model.flightRoute.FlightRouteParameters;
+import com.ryanair.api.model.schedule.ScheduleParameters;
 import com.ryanair.api.model.Section;
 
 import java.time.LocalDate;
@@ -11,10 +11,10 @@ import java.util.List;
 public class ScheduleFactory {
 
 
-    protected static List<ScheduleParameters> createScheduleParameters(Section section, FlightRoute flightRoute) {
+    protected static List<ScheduleParameters> createScheduleParameters(Section section, FlightRouteParameters flightRouteParameters) {
         List<ScheduleParameters> scheduleParametersList = new ArrayList<ScheduleParameters>();
-        LocalDate departureDate = flightRoute.getDepartureDateTime().toLocalDate();
-        LocalDate arrivalDate = flightRoute.getArrivalDateTime().toLocalDate();
+        LocalDate departureDate = flightRouteParameters.getDepartureDateTime().toLocalDate();
+        LocalDate arrivalDate = flightRouteParameters.getArrivalDateTime().toLocalDate();
         int year = departureDate.getYear();
         int month = departureDate.getMonthValue();
         boolean addScheduleParametersFlag = true;

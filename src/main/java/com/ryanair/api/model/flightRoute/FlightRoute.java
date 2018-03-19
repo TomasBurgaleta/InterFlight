@@ -1,10 +1,12 @@
-package com.ryanair.api.model.Schedule;
+package com.ryanair.api.model.flightRoute;
+
+import com.ryanair.api.model.schedule.Flight;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class FlightResult {
+public class FlightRoute {
 
     private LocalDate localDate;
     private LocalDateTime departureDateTime;
@@ -12,7 +14,7 @@ public class FlightResult {
     private String departure;
     private String arrival;
 
-    public FlightResult(Flight flight, LocalDate localDate, String departure, String arrival) {
+    public FlightRoute(Flight flight, LocalDate localDate, String departure, String arrival) {
         this.localDate = localDate;
         this.departureDateTime = getLocalDateTime(localDate, flight.getDepartureTime());
         this.arrivalDateTime = getLocalDateTime(localDate, flight.getArrivalTime());
@@ -56,7 +58,7 @@ public class FlightResult {
         this.arrival = arrival;
     }
 
-    public FlightResult(LocalDate localDate) {
+    public FlightRoute(LocalDate localDate) {
         this.localDate = localDate;
     }
 

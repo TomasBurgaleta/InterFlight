@@ -1,26 +1,25 @@
-package com.ryanair.api.model.Interconnections;
+package com.ryanair.api.model.interconnections;
 
-public class Leg {
-
-    private String departureAirport;
-    private String arrivalAirport;
+public class InterconnectionsRequest {
+    private String departure;
+    private String arrival;
     private String departureDateTime;
     private String arrivalDateTime;
 
-    public String getDepartureAirport() {
-        return departureAirport;
+    public String getDeparture() {
+        return departure;
     }
 
-    public void setDepartureAirport(String departureAirport) {
-        this.departureAirport = departureAirport;
+    public void setDeparture(String departure) {
+        this.departure = departure;
     }
 
-    public String getArrivalAirport() {
-        return arrivalAirport;
+    public String getArrival() {
+        return arrival;
     }
 
-    public void setArrivalAirport(String arrivalAirport) {
-        this.arrivalAirport = arrivalAirport;
+    public void setArrival(String arrival) {
+        this.arrival = arrival;
     }
 
     public String getDepartureDateTime() {

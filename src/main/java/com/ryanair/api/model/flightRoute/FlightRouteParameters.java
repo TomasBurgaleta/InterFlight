@@ -1,4 +1,4 @@
-package com.ryanair.api.model.Schedule;
+package com.ryanair.api.model.flightRoute;
 
 
 
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-public class FlightRoute {
+public class FlightRouteParameters {
 
     public static final String DIRECT_FLY = "directFly";
     public static final String ONE_SCALE = "oneScale";
@@ -17,14 +17,14 @@ public class FlightRoute {
     private LocalDateTime arrivalDateTime;
     private String typeRoute;
 
-    public FlightRoute(String departure, String arrival, LocalDateTime departureDateTime, LocalDateTime arrivalDateTime) {
+    public FlightRouteParameters(String departure, String arrival, LocalDateTime departureDateTime, LocalDateTime arrivalDateTime) {
         this.departureDateTime = departureDateTime;
         this.arrivalDateTime = arrivalDateTime;
         this.sections = Arrays.asList(new Section(departure,arrival));
         this.typeRoute = DIRECT_FLY;
     }
 
-    public FlightRoute(String departure, String interSection, String arrival, LocalDateTime departureDateTime, LocalDateTime arrivalDateTime) {
+    public FlightRouteParameters(String departure, String interSection, String arrival, LocalDateTime departureDateTime, LocalDateTime arrivalDateTime) {
         this.departureDateTime = departureDateTime;
         this.arrivalDateTime = arrivalDateTime;
         this.sections = Arrays.asList(new Section(departure,interSection), new Section(interSection,arrival));

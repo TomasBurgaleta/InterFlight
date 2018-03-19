@@ -10,11 +10,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class RoutesServiceImpl implements RoutesService {
 
     private static final Logger LOG = LoggerFactory.getLogger(RoutesServiceImpl.class);
+
 
     @Autowired
     private RoutesStore routesStore;
@@ -28,7 +31,11 @@ public class RoutesServiceImpl implements RoutesService {
             routeList = routeResultRestStore.getResult();
             LOG.info("getting Routes");
         }
-        return routeList;
+        return getFilterRouteList(routeList);
+    }
+
+    private List<Route> getFilterRouteList(List<Route> routeList)  {
+        return routeList.stream().filter(u -> u.getConnectingAirport() == null).collect(Collectors.toList());
     }
 
     public void setRoutesStore(RoutesStore routesStore) {

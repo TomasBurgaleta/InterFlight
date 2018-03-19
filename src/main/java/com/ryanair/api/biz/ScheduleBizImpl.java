@@ -1,7 +1,9 @@
 package com.ryanair.api.biz;
 
 
-import com.ryanair.api.model.Schedule.*;
+import com.ryanair.api.model.flightRoute.FlightRoute;
+import com.ryanair.api.model.flightRoute.FlightRouteParameters;
+import com.ryanair.api.model.flightRoute.FlightRouteResponse;
 import com.ryanair.api.model.Section;
 import com.ryanair.api.service.rest.consumer.SchedulesService;
 import org.slf4j.Logger;
@@ -10,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -26,25 +26,25 @@ public class ScheduleBizImpl  implements ScheduleBiz{
     private SchedulesService schedulesService;
 
     @Override
-    public FlightRouteResult getFlightsByRoute(List<FlightRoute> flightRouteList) {
-        FlightRouteResult flightRouteResult = new FlightRouteResult();
-        List<FlightResult> validFlights;
-        List<CompletableFuture<List<FlightResult>>> futures = new ArrayList<CompletableFuture<List<FlightResult>>>();
-        LOG.info("getting all FlightRoute for futures");
+    public FlightRouteResponse getFlightsByRoute(List<FlightRouteParameters> flightRouteParametersList) {
+        FlightRouteResponse flightRouteResponse = new FlightRouteResponse();
+        List<FlightRoute> validFlights;
+        List<CompletableFuture<List<FlightRoute>>> futures = new ArrayList<CompletableFuture<List<FlightRoute>>>();
+        LOG.info("getting all FlightRouteParameters for futures");
         try {
-            for (FlightRoute flightRoute : flightRouteList) {
-                for (Section section: flightRoute.getSections()) {
-                    CompletableFuture<List<FlightResult>> flightResultList = schedulesService.getFlightsBySection(section, flightRoute);
+            for (FlightRouteParameters flightRouteParameters : flightRouteParametersList) {
+                for (Section section: flightRouteParameters.getSections()) {
+                    CompletableFuture<List<FlightRoute>> flightResultList = schedulesService.getFlightRouteListBySection(section, flightRouteParameters);
                     futures.add(flightResultList);
                 }
             }
             LOG.info("finish all request for futures");
             sequence(futures).join();
             LOG.info("complete all request for futures");
-            for (CompletableFuture<List<FlightResult>> future: futures) {
+            for (CompletableFuture<List<FlightRoute>> future: futures) {
                 validFlights = future.get();
                 if (!validFlights.isEmpty()) {
-                    flightRouteResult.addFlighResultSection(validFlights.get(0).getRoute(), validFlights);
+                    flightRouteResponse.addFlighResultSection(validFlights.get(0).getRoute(), validFlights);
                 }
             }
         } catch (InterruptedException e) {
@@ -53,20 +53,20 @@ public class ScheduleBizImpl  implements ScheduleBiz{
         }  catch (ExecutionException e) {
             LOG.error("Error in execution of futures", e);
         }
-        return flightRouteResult;
+        return flightRouteResponse;
     }
 
     @Override
-    public FlightRouteResult getFlightsByRoute(FlightRoute flightRoute) {
-        FlightRouteResult flightRouteResult = new FlightRouteResult();
-        Section section = flightRoute.getSections().get(0);
-        List<FlightResult> validFlights;
-        CompletableFuture<List<FlightResult>> future;
+    public FlightRouteResponse getFlightsByRoute(FlightRouteParameters flightRouteParameters) {
+        FlightRouteResponse flightRouteResponse = new FlightRouteResponse();
+        Section section = flightRouteParameters.getSections().get(0);
+        List<FlightRoute> validFlights;
+        CompletableFuture<List<FlightRoute>> future;
         try {
-            future = schedulesService.getFlightsBySection(section, flightRoute);
+            future = schedulesService.getFlightRouteListBySection(section, flightRouteParameters);
             CompletableFuture.allOf(future).join();
             validFlights = future.get();
-            flightRouteResult.addFlighResultSection(validFlights.get(0).getRoute(), validFlights);
+            flightRouteResponse.addFlighResultSection(validFlights.get(0).getRoute(), validFlights);
         }catch (InterruptedException e) {
             LOG.error("Error creating futures", e);
 
@@ -74,7 +74,7 @@ public class ScheduleBizImpl  implements ScheduleBiz{
             LOG.error("Error in execution of futures", e);
         }
 
-        return flightRouteResult;
+        return flightRouteResponse;
     }
 
 

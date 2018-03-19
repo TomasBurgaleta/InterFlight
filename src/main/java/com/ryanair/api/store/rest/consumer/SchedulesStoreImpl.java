@@ -2,8 +2,8 @@ package com.ryanair.api.store.rest.consumer;
 
 import com.ryanair.api.model.ResultRestStore;
 import com.ryanair.api.model.route.Route;
-import com.ryanair.api.model.Schedule.ScheduleParameters;
-import com.ryanair.api.model.Schedule.Schedule;
+import com.ryanair.api.model.schedule.ScheduleParameters;
+import com.ryanair.api.model.schedule.Schedule;
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

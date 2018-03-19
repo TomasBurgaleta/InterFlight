@@ -1,4 +1,4 @@
-package com.ryanair.api.model.Interconnections;
+package com.ryanair.api.model.interconnections;
 
 import java.time.LocalDateTime;
 

@@ -1,19 +1,17 @@
 package com.ryanair.api.biz;
 
 
-import com.ryanair.api.model.Schedule.FlightResult;
-import com.ryanair.api.model.Schedule.FlightRoute;
-import com.ryanair.api.model.Schedule.FlightRouteResult;
-import com.ryanair.api.model.Schedule.ScheduleResponse;
+import com.ryanair.api.model.flightRoute.FlightRouteParameters;
+import com.ryanair.api.model.flightRoute.FlightRouteResponse;
 
 import java.util.List;
 
 public interface ScheduleBiz {
 
-    //public List<ScheduleResponse> getSchedulesListForInterconnectionsParameters(FlightRoute flightRoute);
+    //public List<ScheduleResponse> getSchedulesListForInterconnectionsParameters(FlightRouteParameters flightRoute);
 
 
-    public FlightRouteResult getFlightsByRoute(List<FlightRoute> flightRouteList);
+    public FlightRouteResponse getFlightsByRoute(List<FlightRouteParameters> flightRouteParametersList);
 
-    public FlightRouteResult getFlightsByRoute(FlightRoute flightRoute);
+    public FlightRouteResponse getFlightsByRoute(FlightRouteParameters flightRouteParameters);
 }

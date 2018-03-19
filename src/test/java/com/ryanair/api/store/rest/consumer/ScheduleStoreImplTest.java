@@ -1,8 +1,8 @@
 package com.ryanair.api.store.rest.consumer;
 
 import com.ryanair.api.model.ResultRestStore;
-import com.ryanair.api.model.Schedule.ScheduleParameters;
-import com.ryanair.api.model.Schedule.Schedule;
+import com.ryanair.api.model.schedule.ScheduleParameters;
+import com.ryanair.api.model.schedule.Schedule;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;

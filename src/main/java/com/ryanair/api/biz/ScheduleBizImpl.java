@@ -44,7 +44,7 @@ public class ScheduleBizImpl  implements ScheduleBiz{
             for (CompletableFuture<List<FlightRoute>> future: futures) {
                 validFlights = future.get();
                 if (!validFlights.isEmpty()) {
-                    flightRouteResponse.addFlighResultSection(validFlights.get(0).getRoute(), validFlights);
+                    flightRouteResponse.addFlightResultSection(validFlights.get(0).getRoute(), validFlights);
                 }
             }
         } catch (InterruptedException e) {
@@ -66,7 +66,7 @@ public class ScheduleBizImpl  implements ScheduleBiz{
             future = schedulesService.getFlightRouteListBySection(section, flightRouteParameters);
             CompletableFuture.allOf(future).join();
             validFlights = future.get();
-            flightRouteResponse.addFlighResultSection(validFlights.get(0).getRoute(), validFlights);
+            flightRouteResponse.addFlightResultSection(validFlights.get(0).getRoute(), validFlights);
         }catch (InterruptedException e) {
             LOG.error("Error creating futures", e);
 

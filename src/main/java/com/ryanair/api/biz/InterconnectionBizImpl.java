@@ -55,8 +55,8 @@ public class InterconnectionBizImpl implements InterconnectionBiz {
             if (flightRouteResponse.getFlightListMap().containsKey(section1)
                     && flightRouteResponse.getFlightListMap().containsKey(section2)) {
 
-                List<FlightRoute> flightRouteListFirstScale = flightRouteResponse.getFlighResultSection(section1);
-                List<FlightRoute> flightRouteListSecondScale = flightRouteResponse.getFlighResultSection(section2);
+                List<FlightRoute> flightRouteListFirstScale = flightRouteResponse.getFlightResultSection(section1);
+                List<FlightRoute> flightRouteListSecondScale = flightRouteResponse.getFlightResultSection(section2);
                 validFlightsList.addAll(filterFlightsByInterconnectionTime(flightRouteParameters, flightRouteListFirstScale, flightRouteListSecondScale));
             }
         }
@@ -99,7 +99,7 @@ public class InterconnectionBizImpl implements InterconnectionBiz {
         if (routesBiz.isValidRoute(interconnections)) {
             FlightRouteParameters flightRouteParameters = InterconnectionFactory.createFlightsRouteRequestDirectFly(interconnections);
             FlightRouteResponse flightRouteResponse = scheduleBiz.getFlightsByRoute(flightRouteParameters);
-            List<FlightRoute> flightRouteList = flightRouteResponse.getFlighResultSection(flightRouteParameters.getSections().get(0).getRoute());
+            List<FlightRoute> flightRouteList = flightRouteResponse.getFlightResultSection(flightRouteParameters.getSections().get(0).getRoute());
             List<FlightRoute> validFlightsList = filterFlightByTime(flightRouteList,interconnections.getDepartureDateTime(), interconnections.getArrivalDateTime()) ;
             interconnectionsResultList = InterconnectionFactory.createInterconnectionsResult(validFlightsList, 0);
         }

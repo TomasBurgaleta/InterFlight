@@ -12,11 +12,11 @@ public class FlightRouteResponse {
         flightListMap = new HashMap<String, List<FlightRoute>>();
     }
 
-    public void addFlighResultSection(String section, List<FlightRoute> flightResultlist) {
-        flightListMap.put(section, flightResultlist);
+    public void addFlightResultSection(String section, List<FlightRoute> flightResultList) {
+        flightListMap.put(section, flightResultList);
     }
 
-    public  List<FlightRoute>  getFlighResultSection(String section) {
+    public  List<FlightRoute> getFlightResultSection(String section) {
         return flightListMap.get(section);
     }
 

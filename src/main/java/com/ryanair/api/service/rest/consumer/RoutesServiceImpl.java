@@ -34,6 +34,23 @@ public class RoutesServiceImpl implements RoutesService {
         return getFilterRouteList(routeList);
     }
 
+    @Override
+    public List<Route> getRoutesByOperator(String operator) {
+        List<Route> routeList = Collections.emptyList();
+        ResultRestStore<List<Route>> routeResultRestStore = routesStore.gelAllRoutes();
+        if (routeResultRestStore.getErrorMessage().isEmpty()) {
+            routeList = routeResultRestStore.getResult();
+            LOG.info("getting Routes");
+        }
+        return getFilterbyOperator(routeList, operator);
+    }
+
+    private List<Route> getFilterbyOperator(List<Route> routeList, String operator)  {
+        return routeList.stream().filter(u -> u.getConnectingAirport() == null).filter(u -> u.getOperator().equals(operator)).collect(Collectors.toList());
+    }
+
+
+
     private List<Route> getFilterRouteList(List<Route> routeList)  {
         return routeList.stream().filter(u -> u.getConnectingAirport() == null).collect(Collectors.toList());
     }

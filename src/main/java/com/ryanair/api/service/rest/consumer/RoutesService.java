@@ -7,4 +7,6 @@ import java.util.List;
 public interface RoutesService {
 
     List<Route> getAllRoutes();
+
+    List<Route> getRoutesByOperator(String operator);
 }

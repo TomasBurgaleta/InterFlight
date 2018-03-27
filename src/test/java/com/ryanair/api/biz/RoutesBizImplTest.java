@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -30,7 +31,8 @@ public class RoutesBizImplTest {
 
     @Mock
     private RoutesService routesService;
-
+    private LocalDateTime departureTime = LocalDateTime.now().withDayOfMonth(1);
+    private LocalDateTime arrivalTime = LocalDateTime.now().withDayOfMonth(1).plusDays(15);
     @BeforeMethod
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -60,9 +62,7 @@ public class RoutesBizImplTest {
 
 
     private Interconnections createInterconnections(String departure, String arrival) {
-        Interconnections interconnections =new Interconnections();
-        interconnections.setArrival(arrival);
-        interconnections.setDeparture(departure);
+        Interconnections interconnections = new Interconnections(departure, arrival, departureTime, arrivalTime);
         return interconnections;
     }
 

@@ -69,11 +69,7 @@ public class InterconnectionBizImplTest {
 
 
     private Interconnections createInterconnections(Section section) {
-        Interconnections interconnections = new Interconnections();
-        interconnections.setDeparture("MAD");
-        interconnections.setArrival("BCN");
-        interconnections.setArrivalDateTime(arrivalTime);
-        interconnections.setDepartureDateTime(departureTime);
+        Interconnections interconnections = new Interconnections(section.getDeparture(), section.getArrival(), departureTime, arrivalTime);
         return interconnections;
     }
 

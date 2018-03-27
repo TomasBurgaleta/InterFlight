@@ -10,12 +10,12 @@ import com.ryanair.api.biz.InterconnectionBiz;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -27,6 +27,9 @@ public class InterconnectionsRestController {
     @Autowired
     private RoutesBiz routesBiz;
 
+    @Autowired
+    private InterconnectionsValidator interconnectionsValidator;
+
     private static final Logger LOG = LoggerFactory.getLogger(InterconnectionsRestController.class);
 
     @RequestMapping("/")
@@ -35,17 +38,25 @@ public class InterconnectionsRestController {
     }
 
 
-    @RequestMapping("/interconnections")
-    public List<InterconnectionsResult> message(@RequestParam("departure") String departure, @RequestParam("arrival") String arrival,
-                                                @RequestParam("departureDateTime") String departureDateTime, @RequestParam("arrivalDateTime") String arrivalDateTime) throws Exception {
 
-        InterconnectionsRequest interconnectionsRequest = InterconnectionFactory.createRequestBean(departure, arrival, departureDateTime, arrivalDateTime);
-        checkRequestBean(interconnectionsRequest);
-        Interconnections interconnections = InterconnectionFactory.createInterconnections(interconnectionsRequest);
+    @RequestMapping("/interconnections")
+    public List<InterconnectionsResult> message(@RequestParam("departure") String departure,
+                                                @RequestParam("arrival") String arrival,
+                                                @RequestParam("departureDateTime")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureDateTime,
+                                                @RequestParam("arrivalDateTime")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime arrivalDateTime) throws Exception {
+
+        Interconnections interconnections =  new Interconnections(departure, arrival, departureDateTime, arrivalDateTime);
+        //InterconnectionFactory.createInterconnections(departure, arrival, departureDateTime, arrivalDateTime);
+        checkRequestBean(interconnections);
         List<InterconnectionsResult> interconnectionsResultList = interconnectionBiz.getInterconnectionsByRoutes(interconnections);
         return interconnectionsResultList;
 
     }
+
+//    @InitBinder
+//    public void initBinder(WebDataBinder binder) {
+//        binder.addValidators(interconnectionsValidator);
+//    }
 
     @ExceptionHandler(InterconnectionException.class)
     public String  handleInterconnectionException(HttpServletRequest request, InterconnectionException ex){
@@ -60,12 +71,18 @@ public class InterconnectionsRestController {
 
     }
 
-    private void checkRequestBean(InterconnectionsRequest interconnectionsRequest) throws InterconnectionException{
-        if(!routesBiz.isValidDeparture(interconnectionsRequest.getDeparture())) {
+    private void checkRequestBean(Interconnections interconnections) throws InterconnectionException{
+        if(!routesBiz.isValidDeparture(interconnections.getDeparture())) {
             throw new InterconnectionException("Invalid Departure");
         }
-        if(!routesBiz.isValidArrival(interconnectionsRequest.getArrival())){
+        if(!routesBiz.isValidArrival(interconnections.getArrival())){
             throw new InterconnectionException("Invalid Arrival");
+        }
+        if (interconnections.getDepartureDateTime().isBefore(LocalDateTime.now()) || interconnections.getArrivalDateTime().isBefore(LocalDateTime.now())) {
+            throw new InterconnectionException("Date before today");
+        }
+        if (interconnections.getDepartureDateTime().isAfter(interconnections.getArrivalDateTime())) {
+            throw new InterconnectionException("Departure time is after Arrival time");
         }
     }
 
